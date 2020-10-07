@@ -5,8 +5,7 @@ const forecast = (latitude, longtitude, callback) => {
     "http://api.weatherstack.com/current?access_key=6caae61751610c4e6297eb66f8712ef7&query=" +
     latitude +
     "," +
-    longtitude +
-    "&units=f";
+    longtitude;
 
   request({ url, json: true }, (error, { body }) => {
     if (error) {
@@ -16,12 +15,24 @@ const forecast = (latitude, longtitude, callback) => {
     } else {
       callback(
         undefined,
-        body.current.weather_descriptions[0] +
+        body.location.region +
+          ", " +
+          body.location.country +
+          ".\n The weather is " +
+          body.current.weather_descriptions[0] +
+          " and it was oservated at " +
+          body.current.observation_time +
           ". It is currently " +
           body.current.temperature +
           " degrees out. It feels like " +
           body.current.feelslike +
-          " degrees out."
+          " degrees out.\n Wind speed is " +
+          body.current.wind_speed +
+          "; wind degree is " +
+          body.current.wind_degree +
+          " and humidity is " +
+          body.current.humidity +
+          " %."
       );
     }
   });
